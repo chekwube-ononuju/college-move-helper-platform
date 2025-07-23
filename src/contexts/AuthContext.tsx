@@ -12,13 +12,17 @@ interface AuthContextType {
 
 const defaultUser: UserProfile = {
   id: 'user1',
-  name: 'Demo User',
-  email: 'demo@college.edu',
+  name: 'Alex Chen',
+  email: 'alex.chen@nyu.edu',
   avatar: 'https://i.pravatar.cc/150?img=3',
-  school: 'State University',
+  school: 'New York University',
   rating: 4.8,
-  reviews: 12,
-  isHelper: false
+  reviews: 15,
+  isHelper: false,
+  phone: '(646) 555-0123',
+  bio: 'Senior studying Business Administration. Moving to a new apartment this semester and looking for reliable help with furniture and boxes. I prefer helpers who are punctual and careful with belongings.',
+  location: 'Greenwich Village, Manhattan',
+  joinedDate: '2024-08-15T00:00:00Z'
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
