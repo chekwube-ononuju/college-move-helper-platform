@@ -12,6 +12,8 @@ import BecomeHelper from './pages/BecomeHelper';
 import Assignments from './pages/Assignments';
 import Login from './pages/Login';
 import About from './pages/About';
+import UserProfile from './pages/UserProfile';
+import Payment from './pages/Payment';
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
+            <Route path="/profile/:userId" element={<UserProfile />} />
+            <Route path="/payment/:userId" element={<Payment />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

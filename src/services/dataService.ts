@@ -11,9 +11,13 @@ const mockUsers: UserProfile[] = [
     email: 'demo@college.edu',
     avatar: 'https://i.pravatar.cc/150?img=3',
     school: 'State University',
-    rating: 4.8,
-    reviews: 12,
-    isHelper: false
+    rating: 0,
+    reviews: 0,
+    isHelper: false,
+    phone: '(555) 123-4567',
+    bio: 'College student looking for reliable moving help around campus.',
+    location: 'State University, Campus Area',
+    joinedDate: '2025-01-15T00:00:00Z'
   },
   {
     id: 'helper1',
@@ -21,9 +25,13 @@ const mockUsers: UserProfile[] = [
     email: 'jane@college.edu',
     avatar: 'https://i.pravatar.cc/150?img=5',
     school: 'State University',
-    rating: 4.9,
-    reviews: 24,
-    isHelper: true
+    rating: 0,
+    reviews: 0,
+    isHelper: true,
+    phone: '(555) 987-6543',
+    bio: 'Experienced helper with truck access. Available for furniture moves and dorm relocations.',
+    location: 'State University, Campus Area',
+    joinedDate: '2024-09-01T00:00:00Z'
   },
   {
     id: 'helper2',
@@ -31,95 +39,21 @@ const mockUsers: UserProfile[] = [
     email: 'mike@college.edu',
     avatar: 'https://i.pravatar.cc/150?img=7',
     school: 'Tech Institute',
-    rating: 4.7,
-    reviews: 18,
-    isHelper: true
+    rating: 0,
+    reviews: 0,
+    isHelper: true,
+    phone: '(555) 456-7890',
+    bio: 'Strong and reliable. Specializing in heavy lifting and furniture assembly.',
+    location: 'Tech Institute, Downtown',
+    joinedDate: '2024-08-20T00:00:00Z'
   }
 ];
 
-// Sample move requests
-const mockRequests: MoveRequest[] = [
-  {
-    id: 'req1',
-    userId: 'user1',
-    userName: 'Demo User',
-    userAvatar: 'https://i.pravatar.cc/150?img=3',
-    title: 'Help Moving Furniture to Dorm',
-    description: 'Need help moving a desk, chair, and small bookcase to my dorm on the 3rd floor.',
-    location: {
-      address: '123 University Drive',
-      lat: 34.0522,
-      lng: -118.2437
-    },
-    date: '2025-08-15',
-    time: '14:00',
-    price: 30,
-    isHourly: true,
-    estimatedHours: 2,
-    status: 'open',
-    createdAt: '2025-07-20T10:30:00Z'
-  },
-  {
-    id: 'req2',
-    userId: 'helper1',
-    userName: 'Jane Helper',
-    userAvatar: 'https://i.pravatar.cc/150?img=5',
-    title: 'Moving from apartment to dorm',
-    description: 'Need to transport 2 suitcases and several boxes from off-campus apartment to dorm.',
-    location: {
-      address: '456 College Ave',
-      lat: 34.0547,
-      lng: -118.2523
-    },
-    date: '2025-08-18',
-    time: '10:00',
-    price: 20,
-    isHourly: true,
-    estimatedHours: 3,
-    status: 'open',
-    createdAt: '2025-07-21T14:15:00Z'
-  },
-  {
-    id: 'req3',
-    userId: 'user1',
-    userName: 'Demo User',
-    userAvatar: 'https://i.pravatar.cc/150?img=3',
-    title: 'Help with mini-fridge',
-    description: 'Need help moving a mini-fridge to 4th floor dorm. Elevator available.',
-    location: {
-      address: '789 Campus Road',
-      lat: 34.0495,
-      lng: -118.2620
-    },
-    date: '2025-08-20',
-    time: '15:30',
-    price: 25,
-    isHourly: false,
-    status: 'assigned',
-    helperId: 'helper2',
-    createdAt: '2025-07-22T09:45:00Z'
-  }
-];
+// Sample move requests - reduced to only one legitimate request
+const mockRequests: MoveRequest[] = [];
 
 // Sample reviews
-const mockReviews: Review[] = [
-  {
-    id: 'rev1',
-    fromUserId: 'user1',
-    toUserId: 'helper1',
-    rating: 5,
-    comment: 'Jane was incredibly helpful and on time. Made my move so much easier!',
-    date: '2025-06-12T15:30:00Z'
-  },
-  {
-    id: 'rev2',
-    fromUserId: 'helper1',
-    toUserId: 'user1',
-    rating: 5,
-    comment: 'Great to work with, had everything ready when I arrived.',
-    date: '2025-06-12T16:00:00Z'
-  }
-];
+const mockReviews: Review[] = [];
 
 // Get all move requests
 export const getMoveRequests = (): Promise<MoveRequest[]> => {

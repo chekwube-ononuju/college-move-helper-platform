@@ -34,8 +34,8 @@ export default function CreateRequest() {
   const [estimatedHours, setEstimatedHours] = useState<number>(2);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // For the map marker preview - default to a location in Los Angeles
-  const [location, setLocation] = useState({ lat: 34.0522, lng: -118.2437 });
+  // For the map marker preview - will be set when user enters address
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,12 +62,10 @@ export default function CreateRequest() {
       setIsSubmitting(true);
       
       // In a real app, we would geocode the address to get lat/lng
-      // For this MVP, we'll use a dummy location near the entered address
-      // with a small random offset to show different pins on the map
-      const randomOffset = (Math.random() - 0.5) * 0.01;
-      const geoLocation = {
-        lat: location.lat + randomOffset,
-        lng: location.lng + randomOffset
+      // For this MVP, we'll use the user's current location or a default university location
+      const geoLocation = location || {
+        lat: 40.7128, // Default to NYC area (many universities)
+        lng: -74.0060
       };
       
       const newRequest: Omit<MoveRequest, 'id' | 'createdAt'> = {
@@ -109,18 +107,33 @@ export default function CreateRequest() {
     }
   };
   
-  // Update map when location changes
+  // Get user's current location when they start typing an address
   const handleAddressChange = (newAddress: string) => {
     setAddress(newAddress);
     
-    // In a real app, we would geocode the address
-    // For this MVP, we'll just add small random offsets to the default location
-    if (newAddress) {
-      const randomLat = (Math.random() - 0.5) * 0.05;
-      const randomLng = (Math.random() - 0.5) * 0.05;
+    // Try to get user's location when they start entering an address
+    if (newAddress && !location && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.log('Location access denied, using default');
+          // Fallback to NYC area
+          setLocation({
+            lat: 40.7128,
+            lng: -74.0060
+          });
+        }
+      );
+    } else if (newAddress && !location) {
+      // Fallback if geolocation is not available
       setLocation({
-        lat: 34.0522 + randomLat,
-        lng: -118.2437 + randomLng
+        lat: 40.7128,
+        lng: -74.0060
       });
     }
   };
@@ -269,24 +282,26 @@ export default function CreateRequest() {
                   </div>
                 </div>
                 
-                <div className="pt-4">
-                  <Label>Location Preview</Label>
-                  <div className="mt-2 border rounded-md overflow-hidden">
-                    <MapView 
-                      markers={[{
-                        id: 'preview',
-                        position: location,
-                        title: title || 'Your Request',
-                        price: price
-                      }]}
-                      center={location}
-                      height="300px"
-                    />
+                {location && (
+                  <div className="pt-4">
+                    <Label>Location Preview</Label>
+                    <div className="mt-2 border rounded-md overflow-hidden">
+                      <MapView 
+                        markers={[{
+                          id: 'preview',
+                          position: location,
+                          title: title || 'Your Request',
+                          price: price
+                        }]}
+                        center={location}
+                        height="300px"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      This is approximately where your request will appear on the map.
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    This is approximately where your request will appear on the map.
-                  </p>
-                </div>
+                )}
               </div>
               
               <div className="flex justify-end space-x-4 pt-4">

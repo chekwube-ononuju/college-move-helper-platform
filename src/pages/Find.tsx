@@ -24,6 +24,7 @@ export default function Find() {
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [sortBy, setSortBy] = useState('date');
   const [searchTerm, setSearchTerm] = useState('');
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>({ lat: 40.7128, lng: -74.0060 });
 
   useEffect(() => {
     const loadRequests = async () => {
@@ -40,6 +41,26 @@ export default function Find() {
           price: req.price
         }));
         setMapMarkers(markers);
+        
+        // Set map center to first request location or user's location
+        if (data.length > 0) {
+          setMapCenter({ lat: data[0].location.lat, lng: data[0].location.lng });
+        } else {
+          // Try to get user's current location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                setMapCenter({
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+                });
+              },
+              () => {
+                // Keep default NYC location if geolocation fails
+              }
+            );
+          }
+        }
       } catch (error) {
         console.error('Error loading move requests:', error);
       } finally {
@@ -96,6 +117,7 @@ export default function Find() {
         <div className="lg:col-span-2">
           <MapView 
             markers={mapMarkers} 
+            center={mapCenter}
             onMarkerClick={handleMarkerClick} 
             height="calc(100vh - 250px)"
           />

@@ -7,6 +7,10 @@ export interface UserProfile {
   rating?: number;
   reviews?: number;
   isHelper: boolean;
+  phone?: string;
+  bio?: string;
+  location?: string;
+  joinedDate?: string;
 }
 
 export interface MoveRequest {
@@ -34,9 +38,31 @@ export interface MoveRequest {
 export interface Review {
   id: string;
   fromUserId: string;
+  fromUserName: string;
+  fromUserAvatar?: string;
   toUserId: string;
+  requestId?: string;
   rating: number;
   comment: string;
+  date: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  type: 'card' | 'paypal' | 'venmo' | 'cashapp';
+  last4?: string;
+  brand?: string;
+  isDefault: boolean;
+}
+
+export interface Payment {
+  id: string;
+  requestId: string;
+  fromUserId: string;
+  toUserId: string;
+  amount: number;
+  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  paymentMethodId: string;
   date: string;
 }
 

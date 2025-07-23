@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 interface MapViewProps {
   markers: MapMarker[];
-  center?: { lat: number; lng: number };
+  center: { lat: number; lng: number };
   zoom?: number;
   height?: string;
   onMarkerClick?: (markerId: string) => void;
@@ -19,7 +19,7 @@ declare global {
 
 export function MapView({ 
   markers = [], 
-  center = { lat: 34.0522, lng: -118.2437 }, // Default to Los Angeles
+  center,
   zoom = 13,
   height = '500px',
   onMarkerClick
@@ -32,7 +32,7 @@ export function MapView({
 
   // Initialize map
   useEffect(() => {
-    if (!mapRef.current || !window.L) return;
+    if (!mapRef.current || !window.L || !center) return;
     
     // Create map if it doesn't exist
     if (!leafletMap.current) {
@@ -52,7 +52,7 @@ export function MapView({
         leafletMap.current = null;
       }
     };
-  }, [center.lat, center.lng, zoom]);
+  }, [center?.lat, center?.lng, zoom]);
 
   // Update markers when they change
   useEffect(() => {
